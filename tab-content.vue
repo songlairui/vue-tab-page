@@ -3,7 +3,7 @@
         <div class="content-head">
             <template v-for="(tab, idx) in tabs">
                 <div :key="tab" v-if="idx === currentTab">
-                    <slot :name="`${tab}t`"/>
+                    <slot :name="`${tab}-t`"/>
                 </div>
             </template>
         </div>

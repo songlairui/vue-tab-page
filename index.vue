@@ -1,10 +1,20 @@
 <template>
     <div class="page-with-tabs" ref="page">
-        <tabs :tabs="tabs" :currentTab.sync="currentTab" :collapse.sync="collapse"/>
+        <div class="tab-title-with-action">
+            <tabs :tabs="tabs" :currentTab.sync="currentTab" :collapse.sync="collapse"/>
+            <tab-actions :currentTab.sync="currentTab" :tabs="tabs" :collapse.sync="collapse">
+                <template v-for="tab in tabs">
+                    <template :slot="`${tab}-a`">
+                        <slot :name="`${tab}-a`"/>
+                    </template>
+                </template>
+            </tab-actions>
+        </div>
+
         <tab-content :currentTab.sync="currentTab" :tabs="tabs" :collapse.sync="collapse">
             <template v-for="tab in tabs">
-                <template :slot="`${tab}t`">
-                    <slot :name="`${tab}t`"/>
+                <template :slot="`${tab}-t`">
+                    <slot :name="`${tab}-t`"/>
                 </template>
                 <template :slot="`${tab}`">
                     <slot :name="`${tab}`"/>
@@ -16,12 +26,14 @@
 
 <script>
 import Tabs from './tabs'
-import TabContent from './content'
+import TabActions from './tab-actions'
+import TabContent from './tab-content'
 export default {
     name: 'TabPage',
     components: {
         Tabs,
-        TabContent
+        TabContent,
+        TabActions
     },
     data() {
         return {
@@ -42,5 +54,8 @@ export default {
     overflow: hidden;
     outline: thin solid saddlebrown;
     outline-offset: -1px;
+}
+.tab-title-with-action {
+    display: flex;
 }
 </style>
