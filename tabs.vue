@@ -2,9 +2,9 @@
     <div class="tabs" :class="{collapse}">
         <button
             v-for="(tab, idx) in tabs"
-            :class="{current: idx === currentTab}"
+            :class="{current: idx === current}"
             :key="tab"
-            @click="$emit('update:currentTab', idx)"
+            @click="$emit('update:current', idx)"
         >{{tab}}</button>
     </div>
 </template>
@@ -16,7 +16,7 @@ export default {
             type: Array,
             default: () => []
         },
-        currentTab: {
+        current: {
             default: 0
         },
         collapse: {

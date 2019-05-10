@@ -1,8 +1,8 @@
 <template>
     <div class="page-with-tabs" ref="page">
         <div class="tab-title-with-action">
-            <tabs :tabs="tabs" :currentTab.sync="currentTab" :collapse.sync="collapse"/>
-            <tab-actions :currentTab.sync="currentTab" :tabs="tabs" :collapse.sync="collapse">
+            <tabs :tabs="tabs" :current.sync="current" :collapse.sync="collapse"/>
+            <tab-actions :current.sync="current" :tabs="tabs" :collapse.sync="collapse">
                 <template v-for="tab in tabs">
                     <template :slot="`${tab}-a`">
                         <slot :name="`${tab}-a`"/>
@@ -11,7 +11,7 @@
             </tab-actions>
         </div>
 
-        <tab-content :currentTab.sync="currentTab" :tabs="tabs" :collapse.sync="collapse">
+        <tab-content :current.sync="current" :tabs="tabs" :collapse.sync="collapse">
             <template v-for="tab in tabs">
                 <template :slot="`${tab}-t`">
                     <slot :name="`${tab}-t`"/>
@@ -30,15 +30,32 @@ import TabActions from './tab-actions'
 import TabContent from './tab-content'
 export default {
     name: 'TabPage',
+    props: {
+        tabs: {
+            type: Array,
+            default: () => []
+        },
+        currentTab: {
+            default: 0
+        }
+    },
     components: {
         Tabs,
         TabContent,
         TabActions
     },
+    computed: {
+        current: {
+            get() {
+                return this.currentTab
+            },
+            set(val) {
+                this.$emit('update:currentTab', val)
+            }
+        }
+    },
     data() {
         return {
-            currentTab: 0,
-            tabs: ['tab1', 'tab2'],
             collapse: false
         }
     }

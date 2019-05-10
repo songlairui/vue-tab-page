@@ -1,7 +1,7 @@
 <template>
     <div class="tab-actions">
         <template v-for="(tab, idx) in tabs">
-            <div :key="tab" v-if="idx === currentTab">
+            <div :key="tab" v-if="idx === current">
                 <slot :name="`${tab}-a`"/>
             </div>
         </template>
@@ -15,7 +15,7 @@ export default {
         tabs: {
             default: () => []
         },
-        currentTab: {
+        current: {
             default: 0
         }
     },

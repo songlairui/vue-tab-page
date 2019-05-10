@@ -2,7 +2,7 @@
     <div class="content">
         <div class="content-head">
             <template v-for="(tab, idx) in tabs">
-                <div :key="tab" v-if="idx === currentTab">
+                <div :key="tab" v-if="idx === current">
                     <slot :name="`${tab}-t`"/>
                 </div>
             </template>
@@ -22,7 +22,7 @@
             @scroll="scroll"
         >
             <template v-for="(tab, idx) in tabs">
-                <div :key="tab" v-if="idx === currentTab">
+                <div :key="tab" v-if="idx === current">
                     <slot :name="`${tab}`"/>
                 </div>
             </template>
@@ -37,7 +37,7 @@ export default {
         tabs: {
             default: () => []
         },
-        currentTab: {
+        current: {
             default: 0
         }
     },
@@ -71,6 +71,12 @@ export default {
     watch: {
         'translate.y'(val) {
             this.$emit('update:collapse', val < -100)
+        },
+        current(val) {
+            this.$nextTick(() => {
+                this.$refs.scroll.refresh()
+                this.translate.y = this.$refs.scroll.scroll.y
+            })
         }
     },
     methods: {
